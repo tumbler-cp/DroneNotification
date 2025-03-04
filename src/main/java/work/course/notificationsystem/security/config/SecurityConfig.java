@@ -23,25 +23,29 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
     http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(cors -> cors.configurationSource(
-                    request -> {
-                      var corsConfiguration = new CorsConfiguration();
-                      corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-                      corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-                      corsConfiguration.setAllowedHeaders(List.of("*"));
-                      corsConfiguration.setAllowCredentials(true);
-                      return corsConfiguration;
-                    }
-            ))
-            .authorizeHttpRequests(authorizeRequests ->
-                    authorizeRequests
-                            .requestMatchers("/auth/**")
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated()
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        .csrf(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(
+            request -> {
+              var corsConfiguration = new CorsConfiguration();
+              corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+              corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+              corsConfiguration.setAllowedHeaders(List.of("*"));
+              corsConfiguration.setAllowCredentials(true);
+              return corsConfiguration;
+            }
+        ))
+        .authorizeHttpRequests(authorizeRequests ->
+            authorizeRequests
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .requestMatchers("/swagger-ui/**")
+                .permitAll()
+                .requestMatchers("/docs/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+        )
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 

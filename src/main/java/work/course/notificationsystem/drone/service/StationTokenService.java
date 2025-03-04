@@ -1,4 +1,4 @@
-package work.course.notificationsystem.security.service;
+package work.course.notificationsystem.drone.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -6,55 +6,51 @@ import io.jsonwebtoken.impl.lang.Function;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import work.course.notificationsystem.security.model.User;
+import work.course.notificationsystem.drone.model.DroneStation;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
-public class JwtService {
-
-  @Value("${jwt.secret}")
+public class StationTokenService {
+  @Value("${subscription.drone_station.secret}")
   private String SECRET;
 
-  public boolean isTokenValid(String token, UserDetails userDetails) {
-    final String username = extractUsername(token);
-    return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+  public boolean isTokenValid(String token, DroneStation station) {
+    final UUID uuid = UUID.fromString(extractStationUUID(token));
+    return station.getUuid().equals(uuid);
   }
 
-  public String generateToken(UserDetails userDetails) {
-    return generateToken(
-        new HashMap<>(), userDetails
-    );
+  public String generateToken(DroneStation station) {
+    return generateToken(new HashMap<>(), station);
   }
 
-  public String generateToken(Map<String, Object> claims, UserDetails details) {
+  public String generateToken(Map<String, Object> claims, DroneStation station) {
     return Jwts
         .builder()
         .claims(claims)
-        .subject((details).getUsername())
+        .subject((station).getUuid().toString())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 100))
-        .signWith(getSigningKey(), Jwts.SIG.HS256)
+        .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7))
+        .signWith(getSigningKey())
         .compact();
   }
 
-  public String extractUsername(String token) {
+  public String extractStationUUID(String token) {
     return extractClaim(token, Claims::getSubject);
   }
 
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-    final Claims claims = extractAllClaims(token);
+    final Claims claims = extractClaims(token);
     return claimsResolver.apply(claims);
   }
 
-  private Claims extractAllClaims(String token) {
-    return Jwts
-        .parser()
+  private Claims extractClaims(String token) {
+    return Jwts.parser()
         .verifyWith(getSigningKey())
         .build()
         .parseSignedClaims(token)
@@ -73,5 +69,4 @@ public class JwtService {
     byte[] bytes = Decoders.BASE64.decode(SECRET);
     return Keys.hmacShaKeyFor(bytes);
   }
-
 }

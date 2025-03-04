@@ -1,6 +1,8 @@
 package work.course.notificationsystem.security.model;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import work.course.notificationsystem.person.customer.model.Customer;
+import work.course.notificationsystem.person.sender.model.Sender;
 import work.course.notificationsystem.security.model.enums.Role;
 
 import java.util.Collection;

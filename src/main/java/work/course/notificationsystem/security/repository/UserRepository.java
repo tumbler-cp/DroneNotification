@@ -12,7 +12,7 @@ import work.course.notificationsystem.security.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   UserDetails findByEmail(@NotNull @NotBlank String email);
-
   UserDetails findByUsername(@NotNull @NotBlank @Size(min = 4, max = 120) String username);
+  User findUByUsername(@NotNull @NotBlank @Size(min = 4, max = 120) String username);
 
 }

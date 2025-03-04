@@ -23,6 +23,8 @@ public class Sender {
   private String demoName;
 
   @NotNull
+  @MapsId
+  @JoinColumn(name = "user_id")
   @OneToOne(fetch = FetchType.EAGER)
   private User user;
 

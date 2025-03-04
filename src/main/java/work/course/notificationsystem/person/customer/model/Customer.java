@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import work.course.notificationsystem.person.sender.model.Sender;
 import work.course.notificationsystem.security.model.User;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -22,6 +25,8 @@ public class Customer {
   private String address;
 
   @NotNull
+  @MapsId
+  @JoinColumn(name = "user_id")
   @OneToOne(fetch = FetchType.EAGER)
   private User user;
 

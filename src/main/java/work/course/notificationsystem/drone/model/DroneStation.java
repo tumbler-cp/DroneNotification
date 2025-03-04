@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+
+import java.util.UUID;
 
 @Entity
 @Data
@@ -14,7 +17,8 @@ import lombok.NoArgsConstructor;
 public class DroneStation {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private UUID uuid;
+  String address;
 
 }

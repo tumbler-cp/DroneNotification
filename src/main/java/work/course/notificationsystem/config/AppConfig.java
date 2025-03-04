@@ -3,6 +3,10 @@ package work.course.notificationsystem.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -43,6 +47,19 @@ public class AppConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  private SecurityScheme createSecurityScheme() {
+    return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+        .bearerFormat("JWT")
+        .scheme("bearer");
+  }
+
+  @Bean
+  public OpenAPI openAPI() {
+    return new OpenAPI().addSecurityItem(new SecurityRequirement()
+        .addList("Bearer Authentication"))
+        .components(new Components().addSecuritySchemes("Bearer Authentication", createSecurityScheme()));
   }
 
 }
