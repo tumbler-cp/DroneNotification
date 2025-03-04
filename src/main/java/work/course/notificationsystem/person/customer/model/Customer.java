@@ -26,8 +26,11 @@ public class Customer {
 
   @NotNull
   @MapsId
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", unique = true)
   @OneToOne(fetch = FetchType.EAGER)
   private User user;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  private List<Sender> following;
 
 }

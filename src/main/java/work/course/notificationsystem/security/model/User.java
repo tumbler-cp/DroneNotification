@@ -1,8 +1,6 @@
 package work.course.notificationsystem.security.model;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -53,5 +51,11 @@ public class User implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority(role.name()));
   }
+
+  @OneToOne(mappedBy = "user", optional = false, orphanRemoval = true)
+  private Sender sender;
+
+  @OneToOne(mappedBy = "user", optional = false, orphanRemoval = true)
+  private Customer customer;
 
 }

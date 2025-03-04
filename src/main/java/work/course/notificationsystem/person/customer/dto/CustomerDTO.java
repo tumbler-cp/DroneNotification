@@ -1,4 +1,4 @@
-package work.course.notificationsystem.drone.dto;
+package work.course.notificationsystem.person.customer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StationTokenDTO {
-  private String token;
+public class CustomerDTO {
+  private Long id;
+  private String address;
+  private Long userId;
 }

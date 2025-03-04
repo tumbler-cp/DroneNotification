@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import work.course.notificationsystem.drone.model.DroneStation;
 import work.course.notificationsystem.security.model.User;
+import work.course.notificationsystem.shop.model.WareHouse;
 
 @Entity
 @Data
@@ -24,11 +25,13 @@ public class Sender {
 
   @NotNull
   @MapsId
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", unique = true)
   @OneToOne(fetch = FetchType.EAGER)
   private User user;
 
   @ManyToOne(fetch = FetchType.EAGER)
   private DroneStation droneStation;
 
+  @OneToOne(mappedBy = "sender", orphanRemoval = true)
+  private WareHouse wareHouse;
 }

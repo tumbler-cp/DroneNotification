@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import work.course.notificationsystem.order.model.OrderPosition;
+import work.course.notificationsystem.person.sender.model.Sender;
 
 import java.util.Set;
 
@@ -26,5 +27,12 @@ public class Good {
 
   @OneToMany(mappedBy = "good", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<OrderPosition> order;
+
+  @OneToMany(mappedBy = "good", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<WareHousePosition> warehouse;
+
+  @ManyToOne
+  @JoinColumn(name = "sender_id")
+  private Sender owner;
 
 }

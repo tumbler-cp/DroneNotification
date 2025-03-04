@@ -1,4 +1,4 @@
-package work.course.notificationsystem.drone.dto;
+package work.course.notificationsystem.person.sender.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StationTokenDTO {
+public class SenderTokenDTO {
   private String token;
 }
