@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import work.course.notificationsystem.drone.model.DroneStation;
+import work.course.notificationsystem.person.sender.enums.Verification;
 import work.course.notificationsystem.security.model.User;
 import work.course.notificationsystem.shop.model.WareHouse;
 
@@ -22,6 +23,9 @@ public class Sender {
   private Long id;
 
   private String demoName;
+
+  @Enumerated(EnumType.STRING)
+  private Verification verification;
 
   @NotNull
   @MapsId

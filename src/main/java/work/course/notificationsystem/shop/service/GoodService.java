@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import work.course.notificationsystem.security.repository.UserRepository;
+import work.course.notificationsystem.security.service.UserService;
 import work.course.notificationsystem.shop.dto.GoodDTO;
 import work.course.notificationsystem.shop.dto.NewGoodDTO;
 import work.course.notificationsystem.shop.model.Good;
@@ -15,6 +16,7 @@ import work.course.notificationsystem.shop.repository.GoodRepository;
 public class GoodService {
   private final GoodRepository goodRepository;
   private final UserRepository userRepository;
+  private final UserService userService;
 
   public GoodDTO toDTO(Good good) {
     return GoodDTO.builder()
@@ -57,5 +59,16 @@ public class GoodService {
     good.setDescription(goodDTO.getDescription());
     goodRepository.save(good);
     return toDTO(good);
+  }
+
+  public void delete(Long id) {
+    var owner = userService.getCurrentUser()
+            .getSender();
+    var good = goodRepository.findById(id)
+            .orElseThrow(RuntimeException::new);
+    if (good.getOwner() != owner) {
+      throw new RuntimeException();
+    }
+    goodRepository.delete(good);
   }
 }

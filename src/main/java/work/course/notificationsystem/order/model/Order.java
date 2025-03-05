@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import work.course.notificationsystem.drone.model.Drone;
 import work.course.notificationsystem.person.customer.model.Customer;
 import work.course.notificationsystem.person.sender.model.Sender;
 
@@ -36,8 +35,8 @@ public class Order {
   @ManyToOne
   private Customer customer;
 
-  @OneToOne
-  private Drone drone;
+  @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  private OrderStatus orderStatus;
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<OrderPosition> positions;

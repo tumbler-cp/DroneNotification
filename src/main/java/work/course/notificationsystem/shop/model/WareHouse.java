@@ -31,7 +31,7 @@ public class WareHouse {
   @OneToOne(fetch = FetchType.EAGER)
   private Sender sender;
 
-  @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "wareHouse", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<WareHousePosition> positions;
 
 }
